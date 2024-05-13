@@ -45,7 +45,8 @@ void encodeReset(TwoWire Wire){                                        // This f
   Wire.write(0x20);                                         // Putting the value 0x20 to reset encoders
   Wire.endTransmission(); 
 }
-long encoder1(){                                            // Function to read and display value of encoder 1 as a long
+long encoder1(){    
+  //CurrentTime = millis();                                        // Function to read and display value of encoder 1 as a long
   Wire.beginTransmission(MD25ADDRESS);                      // Send byte to get a reading from encoder 1
   Wire.write(ENCODERONE);
   Wire.endTransmission();
@@ -66,7 +67,8 @@ long encoder1(){                                            // Function to read 
   return(poss1);
 }
 
-long encoder2(){                                            // Function to read and display velue of encoder 2 as a long
+long encoder2(){            
+  CurrentTime=millis();                                // Function to read and display velue of encoder 2 as a long
   Wire.beginTransmission(MD25ADDRESS);           
   Wire.write(ENCODERTWO);
   Wire.endTransmission();
@@ -119,23 +121,23 @@ void AvanceMM(int nb_mm){
 float begin_value_enc1 = encoder1(); 
 Serial.print("nb_mm = "+String(nb_mm)+"PasPour1M = "+String(PasPour1M)+" eq : nb_mm* PasPour1M/1000 = " + float((float(nb_mm)*float(PasPour1M))/float(1000)));
 do{       
-//  if(notInterrupted_moteur){                                                         // Start loop to drive motors forward
+  if(notInterrupted_moteur){                                                         // Start loop to drive motors forward
     Wire.beginTransmission(MD25ADDRESS);                    // Drive motor 2 at speed value stored in x
     Wire.write(SPEED2);
-    Wire.write(129);                                           
+    Wire.write(135);    //146                                        
     Wire.endTransmission();
   
     Wire.beginTransmission(MD25ADDRESS);                    // Drive motor 1 at speed value stored in x
     Wire.write(SPEED1);
-    Wire.write(129);
+    Wire.write(135);//146
     Wire.endTransmission();
  
    // encoder1();                                             // Calls a function that reads and displays value of encoder 1 to LCD03
    // encoder2();                                             // Calls a function that reads and displays value of encoder 2 to LCD03
    // volts();
-  //}else{
-  //  stopMotor();
-  //}                                               // Calls function that reads and displays battery volts
+  }else{
+    stopMotor();
+  }                                               // Calls function that reads and displays battery volts
  }while(encoder1() < begin_value_enc1+float((float(nb_mm)* float(PasPour1M)/float(1000))));                                 
  stopMotor();   
 }
@@ -163,13 +165,13 @@ void ReculeMM(int nb_mm){
  
  stopMotor();
 }
-void GaucheDeg(int nb_deg){
+void DroiteDeg(int nb_deg){
     float begin_value_enc1 = encoder1(); 
   do{  
     if(notInterrupted_moteur){                                                              // Start loop to drive motors forward
     Wire.beginTransmission(MD25ADDRESS);                    // Drive motor 1 at speed value stored in x
     Wire.write(SPEED1);
-    Wire.write(129);
+    Wire.write(135);//146
     Wire.endTransmission();
  
     encoder1();  
@@ -177,11 +179,11 @@ void GaucheDeg(int nb_deg){
       stopMotor();
     }                                           // Calls a function that reads and displays value of encoder 1 to LCD03
    
- }while(encoder1() < (begin_value_enc1-float(float(nb_deg)* float(PasPour360Deg)/360.0)));                                 
+ }while(encoder1() < (begin_value_enc1+float(float(nb_deg)* float(PasPour360Deg)/360.0)));                                 
  
  stopMotor();
 }
-void DroiteDeg(int nb_deg){
+void GaucheDeg(int nb_deg){
   float begin_value_enc2 = encoder2(); 
   Serial.print("begin_value_enc2"+ String(begin_value_enc2)+"nb_deg = "+String(nb_deg)+"PasPour1M = "+String(PasPour360Deg)+" eq : nb_mm* PasPour1M/1000 = " + float((float(nb_deg)*float(PasPour360Deg))/float(360)));
 
@@ -189,7 +191,7 @@ void DroiteDeg(int nb_deg){
     if(notInterrupted_moteur){                                 
     Wire.beginTransmission(MD25ADDRESS);                   
     Wire.write(SPEED2);
-    Wire.write(129);
+    Wire.write(135); ////146
     Wire.endTransmission();
  
     encoder2();                                             // Calls a function that reads and displays value of encoder 1 to LCD03

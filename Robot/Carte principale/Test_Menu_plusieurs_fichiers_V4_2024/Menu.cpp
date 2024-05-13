@@ -1,6 +1,7 @@
 #include <Arduino.h>
 #include "Menu.h"
 #include "ProgrammePrincipal.h"
+#include "Communication.h"
 
 //amélioration possible revenir en arrière dans le menu avec l'axe Y.
 
@@ -18,6 +19,8 @@ unsigned long previousTime = 0;
 unsigned long elapsedTime = 0;
 bool ChangeEtage = LOW;
 bool MenuChoisi = LOW;
+bool Couleur_needed = false;
+bool Couleur_Choisie = false;
 int color = 1;
 bool setup_Couleur_OK = LOW;
 byte Fleche_Haut[8] = {
@@ -47,7 +50,7 @@ String MenuComplet[4][3]={
   {"qualif","finales",}
 }; 
 String Couleur[1][2] = {
-  {"JAUNE","VIOLET"},
+  {"JAUNE","BLEU"},
 };
 
 void Set_Menu_Value(){
@@ -267,11 +270,24 @@ void select_Couleur() {
 	
 	COULEUR = color-1;
 	Serial.print("COULEUR = " + COULEUR);
+  setCouleurChoisie(true);
 	delay(1000);
 	lcd.clear();
 	
 	}
 	SetChange();
+}
+void setCouleurChoisie(bool value){
+  Couleur_Choisie = value;
+}
+void setCouleurNeeded(bool value){
+  Couleur_needed = value;
+}
+bool getCouleurChoisie(){
+  return Couleur_Choisie;
+}
+bool getCouleurNeeded(){
+  return Couleur_needed;
 }
 void waitForTirette(){ //input tirette = 33
     lcd.clear();
@@ -293,5 +309,7 @@ void waitForTirette(){ //input tirette = 33
     do{
       delay(10);
     }while(digitalRead(33));
+    StartTime = millis(); //start des timers
+    CurrentTime = millis();
     lcd.clear();
 }

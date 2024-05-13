@@ -26,6 +26,8 @@ extern bool ComeBack;
 extern byte Fleche_Haut[8];
 extern byte Carre_Vide[8];
 extern bool MenuChoisi;
+extern bool Couleur_Choisie;
+extern bool Couleur_needed;
 
 extern String MenuComplet[4][3];
 extern String Couleur[1][2];
@@ -46,5 +48,9 @@ void ChoisirCouleur();
 void setup_Couleur();
 void select_Couleur();
 void Set_Couleur();
+void setCouleurChoisie(bool);
+void setCouleurNeeded(bool);
+bool getCouleurChoisie();
+bool getCouleurNeeded();
 void waitForTirette();
 #endif //__Menu_H

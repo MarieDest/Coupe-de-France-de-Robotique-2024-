@@ -22,7 +22,8 @@ SoftwareSerial SoftSerial(28,26); // RX, TX//on informe le microcontrôleur que 
 String keyWords[] = {"  distAv =","   distAr =","   distG =","   distD ="};
 String Etat = "";
 
-
+long StartTime =0;
+long  CurrentTime =0 ;
 
 void setupComm(){
   //Serial.begin(9600);
@@ -46,8 +47,9 @@ TwoWire getWire(){
 void setEtat(String Etat_Value){
   Etat = Etat_Value;
 }
+
 void analyse_I2C(int value){
-  if(value<30){
+  if(value<50 ){
     notInterrupted_moteur = true;
   }else{
     notInterrupted_moteur = false;
@@ -70,11 +72,15 @@ void receiveEvent(int howMany) {
   char x = Wire.read();    // receive byte as an integer
   phrase += x;
   Serial.println(phrase);         // print the integer
+  if(CurrentTime<StartTime+100000){
   if(phrase=="truc detecte"){
     notInterrupted_moteur = false;
   }
     if(phrase=="plus de truc"){
     notInterrupted_moteur = true;
+  }
+  }else{
+    notInterrupted_moteur = false;
   }
 }
 void Comm() {

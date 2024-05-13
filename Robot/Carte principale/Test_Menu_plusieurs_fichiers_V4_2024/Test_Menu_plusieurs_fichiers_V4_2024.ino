@@ -5,7 +5,8 @@
 #include "Menu.h"
 #include "Relays.h"
 #include "Communication.h"
-
+#include "ServoRS200.h"
+#include "ElectroAimant.h"
 
 String Programme_a_lancer[3][3] = {
 	{"Test_1M","Test_360_degres","Test?"},
@@ -17,7 +18,6 @@ bool relayOK = false;
 bool notInterrupted = true;
 const int Pin_Tirette = 33;
 
-
 void setup() {
   
   setupComm();
@@ -25,9 +25,10 @@ void setup() {
   setup_Menu();
   setup_Moteur();
   //setupRelay();
-  
+  setupServo();
+  setupElectroAimant();
   setEtat("Avance");
-  
+ 
  //attachInterrupt(digitalPinToInterrupt(21), iSR, CHANGE);
  // attachInterrupt(digitalPinToInterrupt(3), iSR2, FALLING);// on ne peut pas avoir 2 interruptions sur le meme pin.
 }
@@ -50,14 +51,16 @@ void loop() {
 		}
 
 		if (MenuEtage1 == 3 && MenuChoisi) {
+      setCouleurNeeded(true);
 			if (COULEUR == -1) {
 				ChoisirCouleur();
 				Serial.print(COULEUR);
 			}
 		}
 	 delay(300);
-   if(MenuChoisi){
+   if((MenuChoisi && !getCouleurNeeded()) || (MenuChoisi && getCouleurNeeded() &&  getCouleurChoisie())){
     waitForTirette();
+    Serial.println("etage 1 = "+(String)MenuEtage1+" et etage2 = "+(String)MenuEtage2);
 		// lancement du programme d�termin� dans le menu avant. 
 		switch (MenuEtage1) {
 		case 1 : 
@@ -80,3 +83,4 @@ void loop() {
 	}
  
 }
+

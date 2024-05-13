@@ -5,14 +5,14 @@
 #include "Moteur.h"
 #include <Arduino.h>
 #include "Servo.h"
+#include "ServoRS200.h"
+
 #include <Stepper.h>
 #include "Communication.h"
 #include "Menu.h"
 
 
 
-Servo servo_bras; // création de l'objet "servo"
-Servo servo_epaule; // création de l'objet "servo"
 bool notInterrupted_moteur = true;
 const int stepsPerRevolution = 2048;
 const float Nb_pas_pour_1M = 10869.0;
@@ -228,25 +228,27 @@ boolean interruption_moteur = false;
 
 }*/
 void TestNull(){
-//    servo_epaule.write(0); // demande au servo de se déplacer à cette position
-//   delay(1000); // attend 1000 ms entre changement de position
+  Serial.println("TestNull lancé");
+  for (int i=0; i>3;i++) {
+ Serial.println("i = "+(String) i);
+ServoPanneauOuvrir(1);
+delay(1000);
+ServoPanneauOuvrir(2);
+delay(1000);
+ServoPanneauFermer(1);
+delay(1000);
+ServoPanneauFermer(2);
+delay(1000);
 
-//   servo_epaule.write(180); // demande au servo de se déplacer à cette position
-//   delay(1000); // attend 1000 ms entre changement de position
+ 
+  }
+  ServoPanneauOuvrir(1);
+delay(1000);
+ServoPanneauOuvrir(2);
+delay(1000);
+ServoPanneauFermerDoucement(1);
+delay(1000);
+ServoPanneauFermerDoucement(2);
+delay(1000);
 
-//   servo_epaule.write(150); // demande au servo de se déplacer à cette position
-//   delay(1000); // attend 1000 ms entre changement de position
-//    servo_bras.write(0); // demande au servo de se déplacer à cette position
-//   delay(1000); // attend 1000 ms entre changement de position
-
-//   servo_bras.write(180); // demande au servo de se déplacer à cette position
-//   delay(1000); // attend 1000 ms entre changement de position
-
-//   servo_bras.write(150); // demande au servo de se déplacer à cette position
-//   delay(1000); // attend 1000 ms entre changement de position
-
-  StepperRideau.step(stepsPerRevolution);
-  delay(500);
-  StepperRideau.step(-stepsPerRevolution);
-  delay(500);
 }

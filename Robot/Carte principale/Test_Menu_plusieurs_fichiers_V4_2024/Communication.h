@@ -11,6 +11,10 @@
   #include <Wire.h>
 #endif
 
+
+extern long StartTime;
+extern long  CurrentTime;
+
 void setupComm();
 TwoWire getWire();
 void setEtat(String Etat_Value);
